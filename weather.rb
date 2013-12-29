@@ -4,8 +4,17 @@
 require 'open-uri'
 require 'json'
 
+weather_msg = ""
+open('http://api.wunderground.com/api/KEY/forecast10day/q/94131.json') do |f|
+	json_string = f.read
+	parsed_json = JSON.parse(json_string)
+	weather_msg += parsed_json['forecast']['txt_forecast']['forecastday'][0]['fcttext']
+end
 
-output_msg = "Snow coming! "
+#zmw:84101.1.99999
+#locid:01613388
+
+snow_msg = "Snow coming! "
 
 open('http://api.wunderground.com/api/KEY/forecast10day/q/locid:01613388.json') do |f|
   json_string = f.read
@@ -17,14 +26,14 @@ open('http://api.wunderground.com/api/KEY/forecast10day/q/locid:01613388.json') 
   		snow_coming = 1
   	end
   }
-  if output_msg == "Snow coming! "
-  	output_msg = "No snow in forecast :-("
+  if snow_msg == "Snow coming! "
+  	snow_msg = "No snow in forecast :-("
   end
 end
 
 begin
   file = File.open("/var/www/ledmsg.txt", "w")
-  file.write(output_msg)
+  file.write(weather_msg + " " + snow_msg)
 rescue IOError => e
   puts "file writing error"
 ensure
