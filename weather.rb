@@ -9,7 +9,7 @@ open('http://api.wunderground.com/api/KEY/forecast10day/q/94131.json') do |f|
 	json_string = f.read
 	parsed_json = JSON.parse(json_string)
 	if Time.now().hour() > 17
-		weather_msg += parsed_json['forecast']['txt_forecast']['forecastday'][1]['fcttext']
+		weather_msg += parsed_json['forecast']['txt_forecast']['forecastday'][2]['fcttext']
 	else
 		weather_msg += parsed_json['forecast']['txt_forecast']['forecastday'][0]['fcttext']
 	end
